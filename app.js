@@ -1,23 +1,41 @@
-const express=require("express")
-const mongoose=require("mongoose")
-const cors=require("cors")
+const express = require("express")
+const mongoose = require("mongoose")
+const cors = require("cors")
 
-const {bankmodel} = require("./models/bank")
-const app=express()
+const { bankmodel } = require("./models/bank")
+const app = express()
 app.use(cors())
 app.use(express.json())
 mongoose.connect("mongodb+srv://Adithyab:8281041547@cluster0.uhvrb.mongodb.net/bankDB?retryWrites=true&w=majority&appName=Cluster0")
 
-app.post("/add",(req,res)=>{
-    let input=req.body
-    let bank=new bankmodel(input)
+app.post("/add", (req, res) => {
+    let input = req.body
+    let bank = new bankmodel(input)
     bank.save()
-   console.log(bank)
-    res.json({"status":"success"})
-   
+    console.log(bank)
+    res.json({ "status": "success" })
+
+})
+
+app.post("/view", (req, res) => {
+    bankmodel.find().then(
+        (data) => {
+            res.json(data)
+
+        }
+    ).catch(
+        (error) => {
+            res.json(error)
+        }
+    )
+
 })
 
 
-app.listen(8081,()=>{
+
+
+
+
+app.listen(8081, () => {
     console.log("server started")
 })
